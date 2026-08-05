@@ -5,7 +5,7 @@ using BackendTest.Api.Contracts;
 using BackendTest.Application.Models;
 using Xunit;
 
-namespace BackendTests.Api.Tests;
+namespace BackendTests.Api.IntegrationTests;
 
 public sealed class PersonsControllerTests
 {

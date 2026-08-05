@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using BackendTest.Api.Contracts;
 using Xunit;
 
-namespace BackendTests.Api.Tests;
+namespace BackendTests.Api.IntegrationTests;
 
 public sealed class InfoControllerTests
 {

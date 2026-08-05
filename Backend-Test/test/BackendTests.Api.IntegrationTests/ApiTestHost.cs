@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace BackendTests.Api.Tests;
+namespace BackendTests.Api.IntegrationTests;
 
 internal static class ApiTestHost
 {
