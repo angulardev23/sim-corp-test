@@ -4,32 +4,63 @@ namespace BackendTest.Infrastructure.Persistence
 {
     internal sealed class PersonRecord
     {
-        public int Id { get; set; }
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public decimal YearOfBirth { get; set; }
+        internal PersonRecord(int id, string firstName, string lastName, decimal yearOfBirth)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            YearOfBirth = yearOfBirth;
+        }
+
+        public int Id { get; private set; }
+        public string FirstName { get; private set; } = string.Empty;
+        public string LastName { get; private set; } = string.Empty;
+        public decimal YearOfBirth { get; private set; }
     }
 
     internal sealed class ProductRecord
     {
-        public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Type { get; set; } = string.Empty;
-        public double Price { get; set; }
+        internal ProductRecord(int id, string name, string type, decimal price)
+        {
+            Id = id;
+            Name = name;
+            Type = type;
+            Price = price;
+        }
+
+        public int Id { get; private set; }
+        public string Name { get; private set; } = string.Empty;
+        public string Type { get; private set; } = string.Empty;
+        public decimal Price { get; private set; }
     }
 
     internal sealed class PurchaseRecord
     {
-        public int Id { get; set; }
-        public int CustomerId { get; set; }
-        public ICollection<PurchaseProductRecord> Products { get; set; } = new List<PurchaseProductRecord>();
+        internal PurchaseRecord(int id, int customerId)
+        {
+            Id = id;
+            CustomerId = customerId;
+        }
+
+        public int Id { get; private set; }
+        public int CustomerId { get; private set; }
+        public PersonRecord Customer { get; private set; } = null!;
+        public ICollection<PurchaseProductRecord> Products { get; } = new List<PurchaseProductRecord>();
     }
 
     internal sealed class PurchaseProductRecord
     {
-        public int PurchaseId { get; set; }
-        public PurchaseRecord Purchase { get; set; } = null!;
-        public int ProductId { get; set; }
-        public ProductRecord Product { get; set; } = null!;
+        internal PurchaseProductRecord(int purchaseId, int productId, int quantity)
+        {
+            PurchaseId = purchaseId;
+            ProductId = productId;
+            Quantity = quantity;
+        }
+
+        public int PurchaseId { get; private set; }
+        public PurchaseRecord Purchase { get; private set; } = null!;
+        public int ProductId { get; private set; }
+        public ProductRecord Product { get; private set; } = null!;
+        public int Quantity { get; private set; }
     }
 }

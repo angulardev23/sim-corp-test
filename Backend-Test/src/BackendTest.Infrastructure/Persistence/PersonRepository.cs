@@ -44,12 +44,7 @@ namespace BackendTest.Infrastructure.Persistence
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        private static PersonRecord ToRecord(Person person) => new()
-        {
-            Id = person.Id,
-            FirstName = person.FirstName,
-            LastName = person.LastName,
-            YearOfBirth = person.YearOfBirth
-        };
+        private static PersonRecord ToRecord(Person person) =>
+            new(person.Id, person.FirstName, person.LastName, person.YearOfBirth);
     }
 }

@@ -1,6 +1,8 @@
 using System;
 using BackendTest.Application.Repositories;
+using BackendTest.Application.Reports;
 using BackendTest.Infrastructure.Persistence;
+using BackendTest.Infrastructure.Reports;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +18,8 @@ namespace BackendTest.Infrastructure
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+            services.AddScoped<IPurchaseReportRepository, PurchaseReportRepository>();
+            services.AddSingleton<IPurchaseReportFormatter, CsvPurchaseReportFormatter>();
             return services;
         }
 

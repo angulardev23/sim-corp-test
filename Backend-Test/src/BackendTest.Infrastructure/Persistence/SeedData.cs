@@ -26,30 +26,27 @@ namespace BackendTest.Infrastructure.Persistence
 
         internal static ProductRecord[] Products() => new[]
         {
-            Product(1, "Pipe Wrench", "Plumbing"), Product(2, "Electric Drill", "Electric"),
-            Product(3, "Garden Hose", "Gardening"), Product(4, "Toilet Plunger", "Plumbing"),
-            Product(5, "Electric Screwdriver", "Electric"), Product(6, "Garden Shovel", "Gardening"),
-            Product(7, "Faucet", "Plumbing"), Product(8, "Electric Saw", "Electric"),
-            Product(9, "Garden Gloves", "Gardening"), Product(10, "Pipe Cutter", "Plumbing")
+            Product(1, "Pipe Wrench", "Plumbing", 19.99m), Product(2, "Electric Drill", "Electric", 49.99m),
+            Product(3, "Garden Hose", "Gardening", 4.99m), Product(4, "Toilet Plunger", "Plumbing", 1.49m),
+            Product(5, "Electric Screwdriver", "Electric", 29.99m),
+            Product(6, "Garden Shovel", "Gardening", 14.99m), Product(7, "Faucet", "Plumbing", 24.99m),
+            Product(8, "Electric Saw", "Electric", 89.99m), Product(9, "Garden Gloves", "Gardening", 9.99m),
+            Product(10, "Pipe Cutter", "Plumbing", 12.99m)
         };
 
         internal static PurchaseRecord[] Purchases() => PurchaseValues
-            .Select(value => new PurchaseRecord { Id = value.Id, CustomerId = value.CustomerId })
+            .Select(value => new PurchaseRecord(value.Id, value.CustomerId))
             .ToArray();
 
         internal static PurchaseProductRecord[] PurchaseProducts() => PurchaseValues
-            .Select(value => new PurchaseProductRecord
-            {
-                PurchaseId = value.Id,
-                ProductId = value.ProductId
-            })
+            .Select(value => new PurchaseProductRecord(value.Id, value.ProductId, quantity: 1))
             .ToArray();
 
         private static PersonRecord Person(int id, string firstName, string lastName, decimal year) =>
-            new() { Id = id, FirstName = firstName, LastName = lastName, YearOfBirth = year };
+            new(id, firstName, lastName, year);
 
-        private static ProductRecord Product(int id, string name, string type) =>
-            new() { Id = id, Name = name, Type = type };
+        private static ProductRecord Product(int id, string name, string type, decimal price) =>
+            new(id, name, type, price);
 
     }
 }

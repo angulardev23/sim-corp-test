@@ -1,5 +1,5 @@
+using BackendTest.Api.Configuration;
 using BackendTest.Api.Middleware;
-using BackendTest.Application.Services;
 using BackendTest.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,11 +15,13 @@ namespace BackendTest.Api
         {
             services.AddControllers();
             services.AddSwaggerGen(options =>
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend Test API", Version = "v1" }));
-            services.AddScoped<PersonService>();
-            services.AddScoped<ProductService>();
-            services.AddScoped<PurchaseService>();
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Backend Test API",
+                    Version = "v1"
+                }));
 
+            services.AddApplicationServices();
             services.AddInfrastructure();
         }
 

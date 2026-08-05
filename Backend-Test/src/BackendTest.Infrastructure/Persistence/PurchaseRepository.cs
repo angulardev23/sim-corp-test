@@ -19,7 +19,8 @@ namespace BackendTest.Infrastructure.Persistence
                 .Select(purchase => new Purchase(
                     purchase.Id,
                     purchase.CustomerId,
-                    purchase.Products.Select(item => item.ProductId)))
+                    purchase.Products.SelectMany(item =>
+                        Enumerable.Repeat(item.ProductId, item.Quantity))))
                 .ToArrayAsync(cancellationToken);
 
         public async Task<Purchase?> FindByIdAsync(int id, CancellationToken cancellationToken)
@@ -56,17 +57,18 @@ namespace BackendTest.Infrastructure.Persistence
         private static Purchase ToDomain(PurchaseRecord purchase) => new(
             purchase.Id,
             purchase.CustomerId,
-            purchase.Products.Select(item => item.ProductId));
+            purchase.Products.SelectMany(item => Enumerable.Repeat(item.ProductId, item.Quantity)));
 
-        private static PurchaseRecord ToRecord(Purchase purchase) => new()
+        private static PurchaseRecord ToRecord(Purchase purchase)
         {
-            Id = purchase.Id,
-            CustomerId = purchase.CustomerId,
-            Products = purchase.ProductIds.Select(productId => new PurchaseProductRecord
+            var record = new PurchaseRecord(purchase.Id, purchase.CustomerId);
+
+            foreach (var product in purchase.ProductIds.GroupBy(productId => productId))
             {
-                PurchaseId = purchase.Id,
-                ProductId = productId
-            }).ToArray()
-        };
+                record.Products.Add(new PurchaseProductRecord(purchase.Id, product.Key, product.Count()));
+            }
+
+            return record;
+        }
     }
 }

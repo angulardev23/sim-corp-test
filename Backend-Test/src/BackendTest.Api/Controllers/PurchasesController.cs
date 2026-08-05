@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,8 +13,13 @@ namespace BackendTest.Api.Controllers
     public sealed class PurchasesController : ControllerBase
     {
         private readonly PurchaseService _service;
+        private readonly PurchaseReportService _reportService;
 
-        public PurchasesController(PurchaseService service) => _service = service;
+        public PurchasesController(PurchaseService service, PurchaseReportService reportService)
+        {
+            _service = service;
+            _reportService = reportService;
+        }
 
         [HttpGet("getAll")]
         public async Task<ActionResult<IReadOnlyList<PurchaseData>>> GetAll(CancellationToken cancellationToken) =>
@@ -26,11 +30,16 @@ namespace BackendTest.Api.Controllers
             Ok(await _service.GetFirstByCustomerIdAsync(id, cancellationToken));
 
         /// <summary>
-        /// Reserved for the purchase CSV report task. This endpoint is intentionally not implemented.
+        /// Returns a CSV report containing the customer and grouped products for a purchase.
         /// </summary>
         [HttpGet("get/{id:int}/report")]
-        public Task<ActionResult<byte[]>> GetPurchaseReportById(int id) =>
-            throw new NotImplementedException("Please implement me!");
+        public async Task<IActionResult> GetPurchaseReportById(
+            int id,
+            CancellationToken cancellationToken)
+        {
+            var report = await _reportService.GenerateAsync(id, cancellationToken);
+            return File(report, "text/csv; charset=utf-8", $"purchase-{id}-report.csv");
+        }
 
         [HttpPost("add")]
         public async Task<ActionResult<PurchaseData>> Add(

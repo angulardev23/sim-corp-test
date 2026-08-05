@@ -13,7 +13,7 @@ namespace BackendTest.Api.Contracts
         [Required]
         public string Type { get; init; } = string.Empty;
 
-        public double Price { get; init; }
+        public decimal Price { get; init; }
 
         public ProductData ToApplicationModel() => new(Id, Name, Type, Price);
     }

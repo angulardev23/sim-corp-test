@@ -18,6 +18,10 @@ namespace BackendTest.Infrastructure.Persistence
             modelBuilder.Entity<PersonRecord>().HasKey(person => person.Id);
             modelBuilder.Entity<ProductRecord>().HasKey(product => product.Id);
             modelBuilder.Entity<PurchaseRecord>().HasKey(purchase => purchase.Id);
+            modelBuilder.Entity<PurchaseRecord>()
+                .HasOne(purchase => purchase.Customer)
+                .WithMany()
+                .HasForeignKey(purchase => purchase.CustomerId);
             modelBuilder.Entity<PurchaseProductRecord>()
                 .HasKey(item => new { item.PurchaseId, item.ProductId });
             modelBuilder.Entity<PurchaseProductRecord>()

@@ -44,12 +44,7 @@ namespace BackendTest.Infrastructure.Persistence
             await _context.SaveChangesAsync(cancellationToken);
         }
 
-        private static ProductRecord ToRecord(Product product) => new()
-        {
-            Id = product.Id,
-            Name = product.Name,
-            Type = product.Type,
-            Price = product.Price
-        };
+        private static ProductRecord ToRecord(Product product) =>
+            new(product.Id, product.Name, product.Type, product.Price);
     }
 }
