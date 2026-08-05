@@ -1,9 +1,8 @@
 using BackendTest.Application.Models;
 
-namespace BackendTest.Application.Reports
+namespace BackendTest.Application.Reports;
+
+public interface IPurchaseReportFormatter
 {
-    public interface IPurchaseReportFormatter
-    {
-        byte[] Format(PurchaseReport report);
-    }
+    byte[] Format(PurchaseReport report);
 }

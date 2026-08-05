@@ -4,27 +4,17 @@ using BackendTest.Application.Exceptions;
 using BackendTest.Application.Repositories;
 using BackendTest.Application.Reports;
 
-namespace BackendTest.Application.Services
+namespace BackendTest.Application.Services;
+
+public sealed class PurchaseReportService(
+    IPurchaseReportRepository repository,
+    IPurchaseReportFormatter formatter)
 {
-    public sealed class PurchaseReportService
+    public async Task<byte[]> GenerateAsync(int purchaseId, CancellationToken cancellationToken)
     {
-        private readonly IPurchaseReportRepository _repository;
-        private readonly IPurchaseReportFormatter _formatter;
+        var report = await repository.FindByPurchaseIdAsync(purchaseId, cancellationToken)
+            ?? throw new ResourceNotFoundException("Purchase", purchaseId);
 
-        public PurchaseReportService(
-            IPurchaseReportRepository repository,
-            IPurchaseReportFormatter formatter)
-        {
-            _repository = repository;
-            _formatter = formatter;
-        }
-
-        public async Task<byte[]> GenerateAsync(int purchaseId, CancellationToken cancellationToken)
-        {
-            var report = await _repository.FindByPurchaseIdAsync(purchaseId, cancellationToken)
-                ?? throw new ResourceNotFoundException("Purchase", purchaseId);
-
-            return _formatter.Format(report);
-        }
+        return formatter.Format(report);
     }
 }

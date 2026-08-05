@@ -2,10 +2,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using BackendTest.Application.Models;
 
-namespace BackendTest.Application.Repositories
+namespace BackendTest.Application.Repositories;
+
+public interface IPurchaseReportRepository
 {
-    public interface IPurchaseReportRepository
-    {
-        Task<PurchaseReport?> FindByPurchaseIdAsync(int purchaseId, CancellationToken cancellationToken);
-    }
+    Task<PurchaseReport?> FindByPurchaseIdAsync(int purchaseId, CancellationToken cancellationToken);
 }
