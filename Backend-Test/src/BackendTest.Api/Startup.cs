@@ -5,41 +5,40 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
-namespace BackendTest.Api
+namespace BackendTest.Api;
+
+public sealed class Startup
 {
-    public sealed class Startup
+    public void ConfigureServices(IServiceCollection services)
     {
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-            services.AddSwaggerGen(options =>
-                options.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Title = "Backend Test API",
-                    Version = "v1"
-                }));
-
-            services.AddApplicationServices();
-            services.AddInfrastructure();
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
-        {
-            app.ApplicationServices.InitializeInfrastructure();
-            app.UseMiddleware<ApiExceptionMiddleware>();
-
-            if (environment.IsDevelopment())
+        services.AddControllers();
+        services.AddSwaggerGen(options =>
+            options.SwaggerDoc("v1", new OpenApiInfo
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend Test API v1"));
-            }
+                Title = "Backend Test API",
+                Version = "v1"
+            }));
 
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+        services.AddApplicationServices();
+        services.AddInfrastructure();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
+    {
+        app.ApplicationServices.InitializeInfrastructure();
+        app.UseMiddleware<ApiExceptionMiddleware>();
+
+        if (environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend Test API v1"));
         }
+
+        app.UseHttpsRedirection();
+        app.UseRouting();
+        app.UseAuthorization();
+        app.UseEndpoints(endpoints => endpoints.MapControllers());
     }
 }

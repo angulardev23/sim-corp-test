@@ -15,11 +15,12 @@ namespace BackendTests.Infrastructure.Tests
             var report = new PurchaseReport(
                 1,
                 "John Doe",
-                [
+                new[]
+                {
                     new PurchaseReportLine(1, 1, "Pipe Wrench", 19.99m),
                     new PurchaseReportLine(3, 2, "Garden Hose", 4.99m),
                     new PurchaseReportLine(4, 1, "Toilet Plunger", 1.49m)
-                ]);
+                });
 
             var csv = Encoding.UTF8.GetString(_formatter.Format(report));
 
@@ -38,7 +39,7 @@ namespace BackendTests.Infrastructure.Tests
             var report = new PurchaseReport(
                 1,
                 "Doe; John",
-                [new PurchaseReportLine(1, 1, "24\" Pipe", 19.99m)]);
+                new[] { new PurchaseReportLine(1, 1, "24\" Pipe", 19.99m) });
 
             var csv = Encoding.UTF8.GetString(_formatter.Format(report));
 

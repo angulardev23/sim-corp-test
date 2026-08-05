@@ -14,14 +14,14 @@ namespace BackendTest.Infrastructure.Persistence
 
         public PurchaseRepository(BackendTestDbContext context) => _context = context;
 
-        public async Task<IReadOnlyList<Purchase>> GetAllAsync(CancellationToken cancellationToken) =>
-            await _context.Purchases.AsNoTracking()
-                .Select(purchase => new Purchase(
-                    purchase.Id,
-                    purchase.CustomerId,
-                    purchase.Products.SelectMany(item =>
-                        Enumerable.Repeat(item.ProductId, item.Quantity))))
+        public async Task<IReadOnlyList<Purchase>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            var purchases = await _context.Purchases.AsNoTracking()
+                .Include(purchase => purchase.Products)
                 .ToArrayAsync(cancellationToken);
+
+            return purchases.Select(ToDomain).ToArray();
+        }
 
         public async Task<Purchase?> FindByIdAsync(int id, CancellationToken cancellationToken)
         {
